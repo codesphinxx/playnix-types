@@ -1,0 +1,24 @@
+{
+  "name": "scorenix-types",
+  "version": "0.0.1",
+  "description": "Common types used by the Scorenix JavaScript SDKs",
+  "license": "BSD-3-Clause",
+  "author": {
+	  "name": "Code Sphinx",
+	  "url": "https://twitter.com/codesphinx"
+  },
+  "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codesphinxx/scorenix-types.git"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.20.0"
+  },
+  "engines": {
+    "node": ">= 6"
+  }
+}

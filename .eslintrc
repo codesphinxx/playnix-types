@@ -1,0 +1,18 @@
+{
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "plugins": [],
+  "rules": {
+    // ... lots of lots of rules here
+  }
+}
