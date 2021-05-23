@@ -1,7 +1,7 @@
 
 const API_URI = '{SERVER_URI}';
 
-const ScorenixOptions = {
+const PlaynixOptions = {
     /**
      * @type {Boolean}
      * @default false
@@ -27,4 +27,4 @@ const ScorenixOptions = {
     environment: null
 };
 
-export default ScorenixOptions;
+export default PlaynixOptions;

@@ -1,7 +1,7 @@
 {
   "name": "playnix-types",
-  "version": "0.0.1",
-  "description": "Common types used by the Scorenix JavaScript SDKs",
+  "version": "0.0.2",
+  "description": "Common types used by the Playnix JavaScript SDKs",
   "license": "BSD-3-Clause",
   "author": {
     "name": "Code Sphinx",
@@ -10,7 +10,7 @@
   "main": "./src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codesphinxx/scorenix-types.git"
+    "url": "git+https://github.com/codesphinxx/playnix-types.git"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

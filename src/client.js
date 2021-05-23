@@ -1,4 +1,4 @@
-import ScorenixOptions from './options';
+import PlaynixOptions from './options';
 import Exception from './exception';
 import Response from './response';
 import Message from './message';
@@ -10,7 +10,7 @@ export default class BaseLogClient
         if (!BaseLogClient.singleton)
         {
             /**
-             * @type {ScorenixOptions}
+             * @type {PlaynixOptions}
              */
             this.options = null;
             /**
@@ -107,7 +107,7 @@ export default class BaseLogClient
         if (this._xhttp)
         {    
             let path = '';
-            if (this.options.uri.indexOf(ScorenixOptions.uri) != -1)
+            if (this.options.uri.indexOf(PlaynixOptions.uri) != -1)
             {
                 path = '/api/log';
             } 
@@ -141,7 +141,7 @@ export default class BaseLogClient
         {
             throw new Error('InvalidArgument: Client id is expecting a string value');
         }
-        options = Object.assign(ScorenixOptions, options);
+        options = Object.assign(PlaynixOptions, options);
         if (options.uri.indexOf('https:')!=-1)
         {
             options.uri = options.uri.replace('https:', '');

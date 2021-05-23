@@ -10,4 +10,4 @@ export {default as Response} from './response';
 
 export {default as LoggingConfig} from './config';
 
-export {default as ScorenixOptions} from './options';
+export {default as PlaynixOptions} from './options';
