@@ -1,5 +1,5 @@
 {
-  "name": "scorenix-types",
+  "name": "playnix-types",
   "version": "0.0.1",
   "description": "Common types used by the Scorenix JavaScript SDKs",
   "license": "BSD-3-Clause",
