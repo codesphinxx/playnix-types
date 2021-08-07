@@ -107,7 +107,7 @@ export default class BaseLogClient
         if (this._xhttp)
         {    
             let path = '';
-            if (this.options.uri.indexOf(PlaynixOptions.uri) != -1)
+            if (PlaynixOptions.uri.indexOf(this.options.uri) != -1)
             {
                 path = '/api/log';
             } 
