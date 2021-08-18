@@ -180,9 +180,9 @@ export default class BaseLogClient
     * @description Captures an event message
     * @param {String} id event id
     * @param {String} message event message
-    * @param {String} action event action
+    * @param {String} category event action
     */
-    writeEvent(id, message, action) {}
+    writeEvent(id, message, category) {}
 
     /**
     * @public

@@ -24,7 +24,11 @@ const PlaynixOptions = {
     /**
      * @type {String}
      */
-    environment: null
+    environment: null,
+    /**
+     * @type {{log:String, event:String, error:String}}
+     */
+    paths: {}
 };
 
 export default PlaynixOptions;

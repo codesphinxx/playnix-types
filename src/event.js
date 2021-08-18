@@ -6,9 +6,9 @@ export default class Event extends Message
     /**
      * @param {String} id
      * @param {String} message
-     * @param {String} action
+     * @param {String} category
      */
-    constructor(id, message, action)
+    constructor(id, message, category)
     {
         super(message);
         this.name = LoggingConfig.LOG_TRIGGER.EVENT;
@@ -19,6 +19,6 @@ export default class Event extends Message
         /**
          * @type {String}
          */
-        this.action = action;
+        this.category = category;
     }
 }
