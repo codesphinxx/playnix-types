@@ -26,7 +26,7 @@ const PlaynixOptions = {
      */
     environment: null,
     /**
-     * @type {{log:String, event:String, error:String}}
+     * @type {{message:String, event:String, error:String}}
      */
     paths: {}
 };

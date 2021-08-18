@@ -1,4 +1,5 @@
 import PlaynixOptions from './options';
+import LoggingConfig from './config';
 import Exception from './exception';
 import Response from './response';
 import Message from './message';
@@ -107,10 +108,18 @@ export default class BaseLogClient
         if (this._xhttp)
         {    
             let path = '';
-            if (PlaynixOptions.uri.indexOf(this.options.uri) != -1)
+            if (data.name == LoggingConfig.LOG_TRIGGER.ERROR && this.options.paths.error)
             {
-                path = '/api/log';
+                path = `/${this.options.paths.error}`;
             } 
+            if (data.name == LoggingConfig.LOG_TRIGGER.EVENT && this.options.paths.event)
+            {
+                path = `/${this.options.paths.event}`;
+            }
+            if (data.name == LoggingConfig.LOG_TRIGGER.MESSAGE && this.options.paths.message)
+            {
+                path = `/${this.options.paths.message}`;
+            }
             this._xhttp.open(this.options.method, `${this.options.protocol}:${this.options.uri}${path}`, true);
             if (this._xhttp instanceof XMLHttpRequest)
             {
@@ -129,6 +138,10 @@ export default class BaseLogClient
     * @param {String} options.method
     * @param {String} options.protocol
     * @param {String} options.environment
+    * @param {Object} options.paths
+    * @param {String} options.paths.message
+    * @param {String} options.paths.event
+    * @param {String} options.paths.error
     */
     init(key, options)
     {      

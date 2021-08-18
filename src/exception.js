@@ -1,4 +1,4 @@
-import config from './config';
+import LoggingConfig from './config';
 import Message from './message';
 
 export default class Exception extends Message
@@ -9,7 +9,7 @@ export default class Exception extends Message
     constructor(error, handled = true)
     {
         super(error.message);
-        this.name = config.LOG_TRIGGER.ERROR;
+        this.name = LoggingConfig.LOG_TRIGGER.ERROR;
                 
         /**
          * @type {Boolean}
@@ -26,7 +26,7 @@ export default class Exception extends Message
         /**
          * @type {String}
          */
-        this.level = config.LOGS.ERROR;
+        this.level = LoggingConfig.LOGS.ERROR;
 
         this.addStack(error);
     }    
