@@ -142,6 +142,10 @@ export default class BaseLogClient
     * @param {String} options.paths.message
     * @param {String} options.paths.event
     * @param {String} options.paths.error
+    * @param {Object} options.console
+    * @param {Boolean} options.console.log
+    * @param {Boolean} options.console.warn
+    * @param {Boolean} options.console.error
     */
     init(key, options)
     {      
