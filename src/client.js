@@ -61,7 +61,7 @@ export default class BaseLogClient
             {
                 let response = Object.assign(new Response, JSON.parse(this._xhttp.responseText));
             }
-            else
+            else if (this.options.debug && !this.options.console.log)
             {
                 console.log(this._xhttp.responseText);
             }
