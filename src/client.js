@@ -112,10 +112,10 @@ export default class BaseLogClient
         }
         if (this._breadcrumbs.length != 0)
         {
-            data.breadcrumbs = JSON.parse(this._breadcrumbs);
+            data.breadcrumbs = this._breadcrumbs;
         }
         if (this._xhttp)
-        {    
+        {
             let path = '';
             if (data.name == LoggingConfig.LOG_ACTION.ERROR && this.options.paths.error)
             {
@@ -170,7 +170,7 @@ export default class BaseLogClient
         }
         if (breadcrumb.data)
         {
-            values.data = JSON.parse(breadcrumb.data);
+            values.data = JSON.parse(JSON.stringify(breadcrumb.data));
         }
         
         return values;
@@ -230,6 +230,10 @@ export default class BaseLogClient
     * @public
     * @description Sets breadcrumbs that will be attached to any outgoing message
     * @param {Object} breadcrumb Breadcrumb data
+     * @param {String} breadcrumb.category
+     * @param {String} breadcrumb.message
+     * @param {Date} breadcrumb.timestamp
+     * @param {Object} breadcrumb.data
     */
     addBreadcrumb(breadcrumb) 
     {
