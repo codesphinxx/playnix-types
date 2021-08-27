@@ -8,19 +8,20 @@
     "url": "https://twitter.com/codesphinx"
   },
   "main": "./src/index.js",
-  "types": "./typings/index.d.ts",
+  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codesphinxx/playnix-types.git"
   },
   "scripts": {
-    "build:ts": "tsc --project tsconfig.json"
+    "build:ts": "npm-dts generate"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "npm-dts": "^1.3.10"
   },
   "engines": {
     "node": ">= 6"
