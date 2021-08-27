@@ -9,7 +9,7 @@ export default class Exception extends Message
     constructor(error, handled = true)
     {
         super(error.message);
-        this.name = LoggingConfig.LOG_TRIGGER.ERROR;
+        this.name = LoggingConfig.LOG_ACTION.ERROR;
                 
         /**
          * @type {Boolean}

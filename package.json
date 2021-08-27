@@ -1,6 +1,6 @@
 {
   "name": "playnix-types",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Common types used by the Playnix JavaScript SDKs",
   "license": "BSD-3-Clause",
   "author": {
@@ -8,9 +8,13 @@
     "url": "https://twitter.com/codesphinx"
   },
   "main": "./src/index.js",
+  "types": "./typings/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codesphinxx/playnix-types.git"
+  },
+  "scripts": {
+    "build:ts": "tsc --project tsconfig.json"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

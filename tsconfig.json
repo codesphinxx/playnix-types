@@ -1,0 +1,12 @@
+{
+    "include": ["src/**/*.js"],
+    "compilerOptions": {
+      "allowJs": true,
+      "declaration": true,
+      "emitDeclarationOnly": true,
+      "module": "es2015",
+      "target": "es2015",
+      "removeComments": false,
+      "outDir": "typings"
+    }
+  }

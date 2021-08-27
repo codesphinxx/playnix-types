@@ -1,7 +1,6 @@
 import PlaynixOptions from './options';
 import LoggingConfig from './config';
 import Exception from './exception';
-import Response from './response';
 import Message from './message';
 
 export default class BaseLogClient
@@ -43,6 +42,11 @@ export default class BaseLogClient
              * @type {String}
              */
             this._client_id = null;
+            /**
+             * @private
+             * @type {{category:String, message:String, timestamp:Date, data:Object}[]}
+             */
+            this._breadcrumbs = [];
 
             BaseLogClient.singleton = this;
         }
@@ -57,15 +61,16 @@ export default class BaseLogClient
     {
         if (this._xhttp instanceof XMLHttpRequest)
         {
-            if (this._xhttp.readyState === XMLHttpRequest.DONE && this._xhttp.status === 200)
-            {
-                let response = Object.assign(new Response, JSON.parse(this._xhttp.responseText));
-            }
-            else if (this.options.debug && !this.options.console.log)
+            if (this._xhttp.readyState === XMLHttpRequest.DONE && this._xhttp.status != 200 && this.options.debug && !this.options.console.log)
             {
                 console.log(this._xhttp.responseText);
             }
         }
+    }
+
+    static get CONSTANTS()
+    {
+        return LoggingConfig;
     }
 
     /**
@@ -105,18 +110,22 @@ export default class BaseLogClient
         {
             data.environment = this.options.environment;
         }
+        if (this._breadcrumbs.length != 0)
+        {
+            data.breadcrumbs = JSON.parse(this._breadcrumbs);
+        }
         if (this._xhttp)
         {    
             let path = '';
-            if (data.name == LoggingConfig.LOG_TRIGGER.ERROR && this.options.paths.error)
+            if (data.name == LoggingConfig.LOG_ACTION.ERROR && this.options.paths.error)
             {
                 path = `/${this.options.paths.error}`;
             } 
-            if (data.name == LoggingConfig.LOG_TRIGGER.EVENT && this.options.paths.event)
+            if (data.name == LoggingConfig.LOG_ACTION.EVENT && this.options.paths.event)
             {
                 path = `/${this.options.paths.event}`;
             }
-            if (data.name == LoggingConfig.LOG_TRIGGER.MESSAGE && this.options.paths.message)
+            if (data.name == LoggingConfig.LOG_ACTION.MESSAGE && this.options.paths.message)
             {
                 path = `/${this.options.paths.message}`;
             }
@@ -127,6 +136,44 @@ export default class BaseLogClient
             }        
             this._xhttp.send(JSON.stringify(data));
         }        
+    }
+
+    /**
+     * @protected
+     * @param {Object} breadcrumb
+     * @param {String} breadcrumb.category
+     * @param {String} breadcrumb.message
+     * @param {Date} breadcrumb.timestamp
+     * @param {Object} breadcrumb.data
+     */
+    _extractBreadcrumb(breadcrumb)
+    {
+        if (!breadcrumb) return;
+
+        let values = {};
+
+        if (typeof breadcrumb.category == 'string')
+        {
+            values.category = breadcrumb.category;
+        }
+        if (typeof breadcrumb.message == 'string')
+        {
+            values.message = breadcrumb.message;
+        }
+        if (breadcrumb.timestamp instanceof Date)
+        {
+            values.timestamp = breadcrumb.timestamp.getTime();
+        }
+        else if (typeof breadcrumb.timestamp == 'number' || typeof breadcrumb.timestamp == 'bigint')
+        {
+            values.timestamp = breadcrumb.timestamp;
+        }
+        if (breadcrumb.data)
+        {
+            values.data = JSON.parse(breadcrumb.data);
+        }
+        
+        return values;
     }
     
     /**
@@ -180,6 +227,32 @@ export default class BaseLogClient
     }
 
     /**
+    * @public
+    * @description Sets breadcrumbs that will be attached to any outgoing message
+    * @param {Object} breadcrumb Breadcrumb data
+    */
+    addBreadcrumb(breadcrumb) 
+    {
+        let entry = this._extractBreadcrumb(breadcrumb);
+        if (entry)
+        {
+            this._breadcrumbs.push(entry);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * @public
+    * @description Clear breadcrumbs
+    */
+    clearBreadcrumbs() 
+    {
+        this._breadcrumbs.length = 0;
+    }
+
+    /**
      * @public
      * @description Generate and set a unique client Id
      */
@@ -197,7 +270,7 @@ export default class BaseLogClient
     * @description Captures an event message
     * @param {String} id event id
     * @param {String} message event message
-    * @param {String} category event action
+    * @param {String} category event category
     */
     writeEvent(id, message, category) {}
 

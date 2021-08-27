@@ -11,7 +11,7 @@ export default class Event extends Message
     constructor(id, message, category)
     {
         super(message);
-        this.name = LoggingConfig.LOG_TRIGGER.EVENT;
+        this.name = LoggingConfig.LOG_ACTION.EVENT;
         /**
          * @type {String}
          */

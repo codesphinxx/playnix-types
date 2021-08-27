@@ -4,7 +4,7 @@ const LoggingConfig = Object.freeze({
         WARN: 'warn',
         ERROR: 'error'
     },
-    LOG_TRIGGER: {
+    LOG_ACTION: {
         MESSAGE: 'message',
         ERROR: 'error',
         EVENT: 'event'

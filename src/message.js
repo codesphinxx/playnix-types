@@ -10,7 +10,7 @@ export default class Message
         /**
          * @type {String}
          */
-        this.name = LoggingConfig.LOG_TRIGGER.MESSAGE;
+        this.name = LoggingConfig.LOG_ACTION.MESSAGE;
         /**
          * @type {String}
          */
@@ -27,6 +27,10 @@ export default class Message
          * @type {Object}
          */
         this.os = null;
+        /**
+         * @type {{category:String, message:String, timestamp:Date, data:Object}[]}
+         */
+        this.breadcrumbs = [];
         /**
          * @type {Number}
          */
@@ -63,9 +67,13 @@ export default class Message
          * @type {Object}
          */
         this.meta = {};
-        /**
-         * @type {String}
-         */
-        this.version = __VERSION__;
+    }
+
+    /**
+     * @type {string}
+     */
+    get version()
+    {
+        return __VERSION__;
     }
 }
