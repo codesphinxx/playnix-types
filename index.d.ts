@@ -17,32 +17,32 @@ declare module 'playnix-types/client' {
        */
       options: {
           debug: boolean;
-          uri: string;
+          appKey: string;
+          uri: string; /**
+           * @type {PlaynixOptions}
+           */
           method: string;
-          protocol: string; /**
+          protocol: string;
+          environment: string; /**
+           * @private
+           */
+          paths: {
+              message: string;
+              event: string;
+              error: string;
+          }; /**
            * @private
            * @type {String}
            */
-          environment: string;
-          paths: {
-              message: string;
-              event: string; /**
-               * @private
-               * @type {XMLHttpRequest}
-               */
-              error: string;
-          };
           console: {
               log: boolean;
               warn: boolean;
               error: boolean;
-          };
+          }; /**
+           * @private
+           * @type {String}
+           */
       };
-      /**
-       * @private
-       * @type {String}
-       */
-      private _app_key;
       /**
        * @private
        * @type {XMLHttpRequest}
@@ -107,9 +107,14 @@ declare module 'playnix-types/client' {
           data: any;
       };
       /**
-      * @public
-      * @param {String} key - the client application api key
+      * @protected
       * @param {Object} options
+      */
+      protected _validateOptions(options: any): void;
+      /**
+      * @public
+      * @param {Object} options
+      * @param {String} options.appKey
       * @param {Boolean} options.debug
       * @param {String} options.uri
       * @param {String} options.method
@@ -124,7 +129,8 @@ declare module 'playnix-types/client' {
       * @param {Boolean} options.console.warn
       * @param {Boolean} options.console.error
       */
-      public init(key: string, options: {
+      public init(options: {
+          appKey: string;
           debug: boolean;
           uri: string;
           method: string;
@@ -145,17 +151,26 @@ declare module 'playnix-types/client' {
       * @public
       * @description Sets breadcrumbs that will be attached to any outgoing message
       * @param {Object} breadcrumb Breadcrumb data
+      * @param {String} breadcrumb.category
+      * @param {String} breadcrumb.message
+      * @param {Date} breadcrumb.timestamp
+      * @param {Object} breadcrumb.data
       */
-      public addBreadcrumb(breadcrumb: any): boolean;
+      public addBreadcrumb(breadcrumb: {
+          category: string;
+          message: string;
+          timestamp: Date;
+          data: any;
+      }): boolean;
       /**
       * @public
       * @description Clear breadcrumbs
       */
       public clearBreadcrumbs(): void;
       /**
-       * @public
-       * @description Generate and set a unique client Id
-       */
+      * @public
+      * @description Generate and set a unique client Id
+      */
       public generateClientId(): void;
       /**
       * @public
@@ -356,6 +371,7 @@ declare module 'playnix-types/options' {
   export default PlaynixOptions;
   namespace PlaynixOptions {
       const debug: boolean;
+      const appKey: string;
       const uri: string;
       const method: string;
       const protocol: string;

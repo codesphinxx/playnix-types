@@ -15,11 +15,6 @@ export default class BaseLogClient
             this.options = null;
             /**
              * @private
-             * @type {String}
-             */
-            this._app_key = null;
-            /**
-             * @private
              * @type {XMLHttpRequest}
              */
             this._xhttp = null;
@@ -102,9 +97,9 @@ export default class BaseLogClient
         {
             data.clientId = this._client_id;
         }
-        if (this._app_key)
+        if (this.options.appKey)
         {
-            data.secret = this._app_key;
+            data.secret = this.options.appKey;
         }
         if (this.options.environment)
         {
@@ -117,15 +112,15 @@ export default class BaseLogClient
         if (this._xhttp)
         {
             let path = '';
-            if (data.name == LoggingConfig.LOG_ACTION.ERROR && this.options.paths.error)
+            if (data.name == LoggingConfig.LOG_ACTION.ERROR && this.options.paths && this.options.paths.error)
             {
                 path = `/${this.options.paths.error}`;
             } 
-            if (data.name == LoggingConfig.LOG_ACTION.EVENT && this.options.paths.event)
+            if (data.name == LoggingConfig.LOG_ACTION.EVENT && this.options.paths && this.options.paths.event)
             {
                 path = `/${this.options.paths.event}`;
             }
-            if (data.name == LoggingConfig.LOG_ACTION.MESSAGE && this.options.paths.message)
+            if (data.name == LoggingConfig.LOG_ACTION.MESSAGE && this.options.paths && this.options.paths.message)
             {
                 path = `/${this.options.paths.message}`;
             }
@@ -175,11 +170,58 @@ export default class BaseLogClient
         
         return values;
     }
+
+    /**
+    * @protected
+    * @param {Object} options
+    */
+    _validateOptions(options)
+    {
+        if (options.appKey && typeof options.appKey != 'string')
+        {
+            throw new Error('InvalidArgument: [appKey] is expecting a string value');
+        }
+        if ((options.debug != null || options.debug != undefined) && typeof options.debug != 'boolean')
+        {
+            throw new Error('InvalidArgument: [debug] is expecting a string value');
+        }
+        if (options.uri && typeof options.uri != 'string')
+        {
+            throw new Error('InvalidArgument: [uri] is expecting a string value');
+        }
+        if (['POST','PUT','PATCH','DELETE'].indexOf(options.method) == -1)
+        {
+            throw new Error('InvalidArgument: Client submit method must either POST, PUT, PATCH or DELETE');
+        }
+        if (['http','https'].indexOf(options.protocol) == -1)
+        {
+            throw new Error('InvalidArgument: Client submit protocol must either HTTP or HTTPS');
+        }
+        if (options.environment && typeof options.environment != 'string')
+        {
+            throw new Error('InvalidArgument: [environment] is expecting a string value');
+        }
+        if (options.paths)
+        {
+            if (options.paths.message && typeof options.paths.message != 'string')
+            {
+                throw new Error('InvalidArgument: [paths.message] is expecting a string value');
+            }
+            if (options.paths.event && typeof options.paths.event != 'string')
+            {
+                throw new Error('InvalidArgument: [paths.event] is expecting a string value');
+            }        
+            if (options.paths.error && typeof options.paths.error != 'string')
+            {
+                throw new Error('InvalidArgument: [paths.error] is expecting a string value');
+            }
+        }        
+    }
     
     /**
     * @public
-    * @param {String} key - the client application api key
     * @param {Object} options
+    * @param {String} options.appKey
     * @param {Boolean} options.debug
     * @param {String} options.uri
     * @param {String} options.method
@@ -194,18 +236,13 @@ export default class BaseLogClient
     * @param {Boolean} options.console.warn
     * @param {Boolean} options.console.error
     */
-    init(key, options)
+    init(options)
     {      
-        options = options || {};   
-        if (!key)
-        {
-            throw new Error('InvalidArgument: Application client id cannot be null');
-        }
-        if (typeof key != 'string')
-        {
-            throw new Error('InvalidArgument: Client id is expecting a string value');
-        }
+        options = options || {};
         options = Object.assign(PlaynixOptions, options);
+        options.method = options.method.toUpperCase();
+        options.uri = options.uri.toLowerCase();
+
         if (options.uri.indexOf('https:')!=-1)
         {
             options.uri = options.uri.replace('https:', '');
@@ -215,13 +252,28 @@ export default class BaseLogClient
         {
             options.uri = options.uri.replace('http:', '');
             options.protocol = 'http';
-        } 
-        options.method = options.method.toUpperCase();
-        if (['POST','PUT','DELETE'].indexOf(options.method) == -1)
-        {
-            throw new Error('InvalidArgument: Client submit method must either POST, PUT or DELETE');
         }
-        this._app_key = key;
+        if (options.paths)
+        {
+            if (options.paths.message)
+            {
+                if (!options.paths.error) options.paths.error = options.paths.message;
+                if (!options.paths.event) options.paths.event = options.paths.message;
+            }
+            if (options.paths.event)
+            {
+                if (!options.paths.error) options.paths.error = options.paths.event;
+                if (!options.paths.message) options.paths.message = options.paths.event;
+            }        
+            if (options.paths.error)
+            {
+                if (!options.paths.event) options.paths.event = options.paths.error;
+                if (!options.paths.message) options.paths.message = options.paths.error;
+            }
+        }
+
+        this._validateOptions(options);
+        
         this.options = options;
         this.generateClientId();
     }
@@ -230,10 +282,10 @@ export default class BaseLogClient
     * @public
     * @description Sets breadcrumbs that will be attached to any outgoing message
     * @param {Object} breadcrumb Breadcrumb data
-     * @param {String} breadcrumb.category
-     * @param {String} breadcrumb.message
-     * @param {Date} breadcrumb.timestamp
-     * @param {Object} breadcrumb.data
+    * @param {String} breadcrumb.category
+    * @param {String} breadcrumb.message
+    * @param {Date} breadcrumb.timestamp
+    * @param {Object} breadcrumb.data
     */
     addBreadcrumb(breadcrumb) 
     {
@@ -257,9 +309,9 @@ export default class BaseLogClient
     }
 
     /**
-     * @public
-     * @description Generate and set a unique client Id
-     */
+    * @public
+    * @description Generate and set a unique client Id
+    */
     generateClientId() {}
 
     /**

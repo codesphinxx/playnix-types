@@ -10,6 +10,10 @@ const PlaynixOptions = {
     /**
      * @type {String}
      */
+     appKey: null,
+    /**
+     * @type {String}
+     */
     uri: `${API_URI}`,
     /**
      * @type {String}
