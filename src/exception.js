@@ -1,5 +1,6 @@
 import LoggingConfig from './config';
 import Message from './message';
+import StackTracer from 'stacktracey';
 
 export default class Exception extends Message
 {
@@ -29,28 +30,36 @@ export default class Exception extends Message
         this.level = LoggingConfig.LOGS.ERROR;
 
         this.addStack(error);
-    }    
+    }
 
     addStack(error)
     {
         if (!error) return;
-       
-        let stack = {args:[], line:-1, column:-1, func:'', context:'', url:''};
-        
-        if (error.stack || error.stacktrace) 
-            stack.context = error.stack || error.stacktrace;
+
+        if (error.description) 
+            this.description = error.description;
+
+        if (error.displayName)
+            this.display = error.displayName;
+
+        if (error.number)
+            this.number = error.number;
+
+        if (error.cause)
+            this.cause = error.cause;
 
         if (error.fileName) 
-            stack.url = error.fileName;
+            this.file = error.fileName;
         
         if (error.lineNumber)
-            stack.line = error.lineNumber;
+            this.line = error.lineNumber;
 
         if (error.columnNumber)
-            stack.column = error.columnNumber;
+            this.column = error.columnNumber;
 
-        if (error.toSource && !error.stack && !error.stacktrace)
-            stack.context = error.toSource();
-        this.stack.push(stack);
+        if (error.toSource)
+            this.source = error.toSource();
+
+        this.stack = new StackTracer(error);
     }
 }

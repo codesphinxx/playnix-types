@@ -275,6 +275,14 @@ declare module 'playnix-types/exception' {
        */
       level: string;
       addStack(error: any): void;
+      description: any;
+      display: any;
+      number: any;
+      cause: any;
+      file: any;
+      line: any;
+      column: any;
+      source: any;
   }
   import Message from "playnix-types/message";
 

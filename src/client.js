@@ -253,6 +253,10 @@ export default class BaseLogClient
             options.uri = options.uri.replace('http:', '');
             options.protocol = 'http';
         }
+        else if (location.protocol)
+        {
+            options.protocol = location.protocol.replace(':', '');
+        }
         if (options.paths)
         {
             if (options.paths.message)
